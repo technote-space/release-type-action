@@ -1,4 +1,3 @@
-# https://help.github.com/ja/articles/metadata-syntax-for-github-actions
 name: Release Type Action
 
 description: GitHub Actions to do some actions based on release type.
@@ -9,18 +8,42 @@ inputs:
   GITHUB_TOKEN:
     description: Secret GitHub API token to use for making API requests.
     required: true
-
-#outputs:
-#  result:
-#    description: action result
+  BRANCH_NAME:
+    description: Target branch name
+    default: release/next
+    required: true
+  MINOR_UPDATE_TYPES:
+    description: Minor update commit types
+    default: feat
+    required: false
+  EXCLUDE_MESSAGES:
+    description: Exclude messages
+    required: false
+  BREAKING_CHANGE_NOTES:
+    description: Breaking change notes
+    default: BREAKING CHANGE
+    required: false
+  TITLE_TEMPLATE:
+    description: Title template
+    default: 'feat: release ${NEXT_VERSION}'
+    required: true
+  MAJOR_LABEL:
+    description: major release label
+    default: 'Release: Major'
+    required: false
+  MINOR_LABEL:
+    description: Minor release label
+    default: 'Release: Minor'
+    required: false
+  PATCH_LABEL:
+    description: Patch release label
+    default: 'Release: Patch'
+    required: false
 
 branding:
-  # https://feathericons.com/
-  icon: 'package'
-  color: 'orange'
+  icon: 'git-pull-request'
+  color: 'blue'
 
 runs:
   using: node12
   main: lib/main.js
-#  post: lib/post.js
-#  post-if: 'success()'
