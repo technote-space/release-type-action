@@ -31,7 +31,7 @@ const context     = generateContext({
 			body: 'test body',
 			title: 'feat: release v1.2.3',
 			head: {
-				ref: 'release/next',
+				ref: 'release/v1.2.2',
 			},
 			base: {
 				ref: 'master',
