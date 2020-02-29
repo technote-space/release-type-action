@@ -2,7 +2,7 @@
 import { resolve } from 'path';
 import { isTargetEvent } from '@technote-space/filter-github-action';
 import { getContext, testEnv } from '@technote-space/github-action-test-helper';
-import { getTitle, getPrHeadRef, getPrTitle, getPrLabels } from '../../src/utils/misc';
+import { getTitle, getPrHeadRef, getPrTitle, getPrLabels, isTargetBranch } from '../../src/utils/misc';
 import { TARGET_EVENTS } from '../../src/constant';
 
 const rootDir = resolve(__dirname, '../..');
@@ -91,5 +91,52 @@ describe('getPrLabels', () => {
 			payload: {},
 		}))).toEqual([]);
 		expect(getPrLabels(getContext({}))).toEqual([]);
+	});
+});
+
+describe('isTargetBranch', () => {
+	testEnv(rootDir);
+
+	it('should return true 1', () => {
+		expect(isTargetBranch(getContext({
+			payload: {
+				'pull_request': {
+					head: {
+						ref: 'release/v1.2.3',
+					},
+				},
+			},
+		}))).toBe(true);
+	});
+
+	it('should return true 1', () => {
+		process.env.INPUT_BRANCH_NAME = 'test';
+		expect(isTargetBranch(getContext({
+			payload: {
+				'pull_request': {
+					head: {
+						ref: 'test',
+					},
+				},
+			},
+		}))).toBe(true);
+	});
+
+	it('should return false', () => {
+		expect(isTargetBranch(getContext({}))).toBe(false);
+		expect(isTargetBranch(getContext({
+			payload: {
+				'pull_request': {
+					head: {
+						ref: 'test',
+					},
+				},
+			},
+		}))).toBe(false);
+	});
+
+	it('should throw error', () => {
+		process.env.INPUT_BRANCH_PREFIX = '';
+		expect(() => isTargetBranch(getContext({}))).toThrow('Branch target setting is required.');
 	});
 });

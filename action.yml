@@ -10,8 +10,11 @@ inputs:
     required: true
   BRANCH_NAME:
     description: Target branch name
-    default: release/next
-    required: true
+    required: false
+  BRANCH_PREFIX:
+    description: Target branch prefix
+    default: release/
+    required: false
   MINOR_UPDATE_TYPES:
     description: Minor update commit types
     default: feat
