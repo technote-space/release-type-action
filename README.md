@@ -14,9 +14,9 @@ GitHub Actions to do some actions based on release type.
 <details>
 <summary>Details</summary>
 
-- [Setup](#setup)
-  - [yarn](#yarn)
-  - [npm](#npm)
+- [Actions](#actions)
+  - [Set title](#set-title)
+  - [Set label](#set-label)
 - [Author](#author)
 
 </details>
