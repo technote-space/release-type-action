@@ -22,11 +22,14 @@ GitHub Actions to do some actions based on release type.
 </details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Setup
-### yarn
-- `yarn setup`
-### npm
-- `npm run setup`
+## Actions
+### Set title
+e.g. `eat: release v1.2.3`
+
+### Set label
+- Release: Major
+- Release: Minor
+- Release: Patch
 
 ## Author
 [GitHub (Technote)](https://github.com/technote-space)  
