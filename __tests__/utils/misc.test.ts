@@ -35,8 +35,8 @@ describe('isTargetEvent', () => {
 describe('getTitle', () => {
 	testEnv(rootDir);
 
-	it('should get title', () => {
-		expect(getTitle('v1.2.3')).toBe('feat: release v1.2.3');
+	it('should get title', async() => {
+		expect(await getTitle('v1.2.3')).toBe('feat: release v1.2.3');
 	});
 });
 

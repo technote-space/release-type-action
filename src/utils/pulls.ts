@@ -7,7 +7,7 @@ import { getNextVersion, getNextVersionLevel } from './version';
 
 export const setTitle = async(logger: Logger, helper: ApiHelper, octokit: Octokit, context: Context): Promise<void> => {
 	const next  = await getNextVersion(logger, helper, octokit, context);
-	const title = getTitle(next);
+	const title = await getTitle(next);
 
 	if (title && title !== getPrTitle(context)) {
 		await octokit.pulls.update({
