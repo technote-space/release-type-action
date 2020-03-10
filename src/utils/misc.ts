@@ -12,20 +12,10 @@ export const getMajorLabel             = (): string => getInput('MAJOR_LABEL');
 export const getMinorLabel             = (): string => getInput('MINOR_LABEL');
 export const getPatchLabel             = (): string => getInput('PATCH_LABEL');
 
-const replaceVariables = (string: string, variables: { key: string; replace: () => string }[]): string => {
-	let replaced = string;
-	for (const variable of variables) {
-		if (Utils.getRegExp(`\${${variable.key}}`).test(replaced)) {
-			replaced = Utils.replaceAll(replaced, `\${${variable.key}}`, variable.replace());
-		}
-	}
-
-	return replaced;
-};
 const contextVariables = (next: string): Array<{ key: string; replace: () => string }> => [
 	{key: 'NEXT_VERSION', replace: (): string => next},
 ];
-export const getTitle  = (next: string): string => replaceVariables(getTitleTemplate(), contextVariables(next));
+export const getTitle  = (next: string): Promise<string> => Utils.replaceVariables(getTitleTemplate(), contextVariables(next));
 
 export const getPrHeadRef = (context: Context): string => context.payload.pull_request?.head.ref ?? '';
 export const getPrTitle   = (context: Context): string => context.payload.pull_request?.title ?? '';

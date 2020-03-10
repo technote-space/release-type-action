@@ -28,7 +28,7 @@ inputs:
     required: false
   TITLE_TEMPLATE:
     description: Title template
-    default: 'feat: release ${NEXT_VERSION}'
+    default: 'release: ${NEXT_VERSION}'
     required: true
   MAJOR_LABEL:
     description: major release label

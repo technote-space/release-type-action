@@ -14,19 +14,22 @@ GitHub Actions to do some actions based on release type.
 <details>
 <summary>Details</summary>
 
-- [Setup](#setup)
-  - [yarn](#yarn)
-  - [npm](#npm)
+- [Actions](#actions)
+  - [Set title](#set-title)
+  - [Set label](#set-label)
 - [Author](#author)
 
 </details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Setup
-### yarn
-- `yarn setup`
-### npm
-- `npm run setup`
+## Actions
+### Set title
+e.g. `release: v1.2.3`
+
+### Set label
+- Release: Major
+- Release: Minor
+- Release: Patch
 
 ## Author
 [GitHub (Technote)](https://github.com/technote-space)  
