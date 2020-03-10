@@ -24,7 +24,7 @@ GitHub Actions to do some actions based on release type.
 
 ## Actions
 ### Set title
-e.g. `eat: release v1.2.3`
+e.g. `release: v1.2.3`
 
 ### Set label
 - Release: Major
