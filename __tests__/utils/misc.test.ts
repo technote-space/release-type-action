@@ -36,7 +36,7 @@ describe('getTitle', () => {
 	testEnv(rootDir);
 
 	it('should get title', async() => {
-		expect(await getTitle('v1.2.3')).toBe('feat: release v1.2.3');
+		expect(await getTitle('v1.2.3')).toBe('release: v1.2.3');
 	});
 });
 
