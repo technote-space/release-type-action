@@ -22,6 +22,19 @@ GitHub Actions to do some actions based on release type.
 </details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Usage
+```yaml
+on: pull_request
+
+name: Manage release
+
+jobs:
+  manageRelease:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: technote-space/release-type-action@v1
+```
+
 ## Actions
 ### Set title
 e.g. `release: v1.2.3`
