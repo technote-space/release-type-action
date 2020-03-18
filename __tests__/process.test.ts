@@ -5,7 +5,7 @@ import {
 	testEnv,
 	disableNetConnect,
 	spyOnStdout,
-	spyOnExec,
+	spyOnSpawn,
 	testChildProcess,
 	getOctokit,
 	generateContext,
@@ -53,7 +53,7 @@ describe('execute', () => {
 
 	it('should do nothing', async() => {
 		process.env.INPUT_BRANCH_NAME = 'test';
-		const mockExec                = spyOnExec();
+		const mockExec                = spyOnSpawn();
 		const mockStdout              = spyOnStdout();
 
 		await execute(new Logger(), getOctokit(), context);
@@ -66,7 +66,7 @@ describe('execute', () => {
 
 	it('should update title', async() => {
 		process.env.INPUT_GITHUB_TOKEN = 'token';
-		const mockExec                 = spyOnExec();
+		const mockExec                 = spyOnSpawn();
 		const mockStdout               = spyOnStdout();
 		const fn                       = jest.fn();
 
