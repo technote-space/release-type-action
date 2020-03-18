@@ -14,6 +14,7 @@ GitHub Actions to do some actions based on release type.
 <details>
 <summary>Details</summary>
 
+- [Usage](#usage)
 - [Actions](#actions)
   - [Set title](#set-title)
   - [Set label](#set-label)
