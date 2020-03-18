@@ -5,7 +5,7 @@ import {
 	testEnv,
 	disableNetConnect,
 	spyOnStdout,
-	spyOnExec,
+	spyOnSpawn,
 	testChildProcess,
 	getOctokit,
 	generateContext,
@@ -52,11 +52,10 @@ describe('execute', () => {
 	disableNetConnect(nock);
 
 	it('should do nothing', async() => {
-		process.env.INPUT_BRANCH_NAME = 'test';
-		const mockExec                = spyOnExec();
-		const mockStdout              = spyOnStdout();
+		const mockExec   = spyOnSpawn();
+		const mockStdout = spyOnStdout();
 
-		await execute(new Logger(), getOctokit(), context);
+		await execute(new Logger(), getOctokit(), generateContext({}));
 
 		execCalledWith(mockExec, []);
 		stdoutCalledWith(mockStdout, [
@@ -65,10 +64,9 @@ describe('execute', () => {
 	});
 
 	it('should update title', async() => {
-		process.env.INPUT_GITHUB_TOKEN = 'token';
-		const mockExec                 = spyOnExec();
-		const mockStdout               = spyOnStdout();
-		const fn                       = jest.fn();
+		const mockExec   = spyOnSpawn();
+		const mockStdout = spyOnStdout();
+		const fn         = jest.fn();
 
 		nock('https://api.github.com')
 			.persist()
@@ -105,11 +103,10 @@ describe('execute', () => {
 	});
 
 	it('should set labels', async() => {
-		process.env.INPUT_GITHUB_TOKEN = 'token';
-		const mockStdout               = spyOnStdout();
-		const fn1                      = jest.fn();
-		const fn2                      = jest.fn();
-		const fn3                      = jest.fn();
+		const mockStdout = spyOnStdout();
+		const fn1        = jest.fn();
+		const fn2        = jest.fn();
+		const fn3        = jest.fn();
 
 		nock('https://api.github.com')
 			.persist()
