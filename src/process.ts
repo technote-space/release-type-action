@@ -11,8 +11,6 @@ export const execute = async(logger: Logger, octokit: Octokit, context: Context)
 		return;
 	}
 
-	const helper = new ApiHelper(octokit, context, logger);
-
-	await setTitle(logger, helper, octokit, context);
+	await setTitle(logger, new ApiHelper(octokit, context, logger), octokit, context);
 	await setLabels(logger, octokit, context);
 };
