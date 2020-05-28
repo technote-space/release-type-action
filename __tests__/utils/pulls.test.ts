@@ -1,10 +1,10 @@
 /* eslint-disable no-magic-numbers */
-import { resolve } from 'path';
+import {resolve} from 'path';
 import nock from 'nock';
-import { Context } from '@actions/github/lib/context';
-import { Logger, ApiHelper } from '@technote-space/github-action-helper';
-import { generateContext, testEnv, getOctokit, disableNetConnect, getApiFixture, spyOnStdout, stdoutCalledWith, getLogStdout } from '@technote-space/github-action-test-helper';
-import { setTitle, getReleaseLabels, setLabels } from '../../src/utils/pulls';
+import {Context} from '@actions/github/lib/context';
+import {Logger, ApiHelper} from '@technote-space/github-action-helper';
+import {generateContext, testEnv, getOctokit, disableNetConnect, getApiFixture, spyOnStdout, stdoutCalledWith, getLogStdout} from '@technote-space/github-action-test-helper';
+import {setTitle, getReleaseLabels, setLabels} from '../../src/utils/pulls';
 
 const rootDir      = resolve(__dirname, '../..');
 const fixturesDir  = resolve(__dirname, '..', 'fixtures');
@@ -13,219 +13,219 @@ const logger       = new Logger();
 const getApiHelper = (context: Context): ApiHelper => new ApiHelper(octokit, context, logger);
 
 afterEach(() => {
-	Logger.resetForTesting();
+  Logger.resetForTesting();
 });
 
 describe('setTitle', () => {
-	testEnv(rootDir);
-	disableNetConnect(nock);
+  testEnv(rootDir);
+  disableNetConnect(nock);
 
-	it('should not set title 1', async() => {
-		process.env.INPUT_TITLE_TEMPLATE = '';
-		nock('https://api.github.com')
-			.persist()
-			.get('/repos/hello/world/pulls/123/commits')
-			.reply(200, () => getApiFixture(fixturesDir, 'commit.list1'))
-			.get('/repos/hello/world/git/matching-refs/tags/')
-			.reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'));
+  it('should not set title 1', async() => {
+    process.env.INPUT_TITLE_TEMPLATE = '';
+    nock('https://api.github.com')
+      .persist()
+      .get('/repos/hello/world/pulls/123/commits')
+      .reply(200, () => getApiFixture(fixturesDir, 'commit.list1'))
+      .get('/repos/hello/world/git/matching-refs/tags/')
+      .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'));
 
-		const context = generateContext({
-			owner: 'hello',
-			repo: 'world',
-		}, {
-			payload: {
-				number: 123,
-			},
-		});
-		await setTitle(logger, getApiHelper(context), octokit, context);
-	});
+    const context = generateContext({
+      owner: 'hello',
+      repo: 'world',
+    }, {
+      payload: {
+        number: 123,
+      },
+    });
+    await setTitle(logger, getApiHelper(context), octokit, context);
+  });
 
-	it('should not set title 1', async() => {
-		process.env.INPUT_TITLE_TEMPLATE = 'test';
-		nock('https://api.github.com')
-			.persist()
-			.get('/repos/hello/world/pulls/123/commits')
-			.reply(200, () => getApiFixture(fixturesDir, 'commit.list1'))
-			.get('/repos/hello/world/git/matching-refs/tags/')
-			.reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'));
+  it('should not set title 1', async() => {
+    process.env.INPUT_TITLE_TEMPLATE = 'test';
+    nock('https://api.github.com')
+      .persist()
+      .get('/repos/hello/world/pulls/123/commits')
+      .reply(200, () => getApiFixture(fixturesDir, 'commit.list1'))
+      .get('/repos/hello/world/git/matching-refs/tags/')
+      .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'));
 
-		const context = generateContext({
-			owner: 'hello',
-			repo: 'world',
-		}, {
-			payload: {
-				number: 123,
-				'pull_request': {
-					title: 'test',
-				},
-			},
-		});
-		await setTitle(logger, getApiHelper(context), octokit, context);
-	});
+    const context = generateContext({
+      owner: 'hello',
+      repo: 'world',
+    }, {
+      payload: {
+        number: 123,
+        'pull_request': {
+          title: 'test',
+        },
+      },
+    });
+    await setTitle(logger, getApiHelper(context), octokit, context);
+  });
 
-	it('should set title', async() => {
-		const fn = jest.fn();
+  it('should set title', async() => {
+    const fn = jest.fn();
 
-		nock('https://api.github.com')
-			.persist()
-			.get('/repos/hello/world/pulls/123/commits')
-			.reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
-			.get('/repos/hello/world/git/matching-refs/tags/')
-			.reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
-			.patch('/repos/hello/world/pulls/123', body => {
-				fn();
-				return body;
-			})
-			.reply(200);
+    nock('https://api.github.com')
+      .persist()
+      .get('/repos/hello/world/pulls/123/commits')
+      .reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
+      .get('/repos/hello/world/git/matching-refs/tags/')
+      .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
+      .patch('/repos/hello/world/pulls/123', body => {
+        fn();
+        return body;
+      })
+      .reply(200);
 
-		const context = generateContext({
-			owner: 'hello',
-			repo: 'world',
-		}, {
-			payload: {
-				number: 123,
-			},
-		});
-		await setTitle(logger, getApiHelper(context), octokit, context);
+    const context = generateContext({
+      owner: 'hello',
+      repo: 'world',
+    }, {
+      payload: {
+        number: 123,
+      },
+    });
+    await setTitle(logger, getApiHelper(context), octokit, context);
 
-		expect(fn).toBeCalled();
-	});
+    expect(fn).toBeCalled();
+  });
 });
 
 describe('getReleaseLabels', () => {
-	testEnv(rootDir);
+  testEnv(rootDir);
 
-	it('should get major', () => {
-		process.env.INPUT_MAJOR_LABEL = 'major';
-		process.env.INPUT_MINOR_LABEL = '';
-		process.env.INPUT_PATCH_LABEL = '';
-		expect(getReleaseLabels()).toEqual({
-			0: 'major',
-		});
-	});
+  it('should get major', () => {
+    process.env.INPUT_MAJOR_LABEL = 'major';
+    process.env.INPUT_MINOR_LABEL = '';
+    process.env.INPUT_PATCH_LABEL = '';
+    expect(getReleaseLabels()).toEqual({
+      0: 'major',
+    });
+  });
 
-	it('should get minor', () => {
-		process.env.INPUT_MAJOR_LABEL = '';
-		process.env.INPUT_MINOR_LABEL = 'minor';
-		process.env.INPUT_PATCH_LABEL = '';
-		expect(getReleaseLabels()).toEqual({
-			1: 'minor',
-		});
-	});
+  it('should get minor', () => {
+    process.env.INPUT_MAJOR_LABEL = '';
+    process.env.INPUT_MINOR_LABEL = 'minor';
+    process.env.INPUT_PATCH_LABEL = '';
+    expect(getReleaseLabels()).toEqual({
+      1: 'minor',
+    });
+  });
 
-	it('should get patch', () => {
-		process.env.INPUT_MAJOR_LABEL = '';
-		process.env.INPUT_MINOR_LABEL = '';
-		process.env.INPUT_PATCH_LABEL = 'patch';
-		expect(getReleaseLabels()).toEqual({
-			2: 'patch',
-		});
-	});
+  it('should get patch', () => {
+    process.env.INPUT_MAJOR_LABEL = '';
+    process.env.INPUT_MINOR_LABEL = '';
+    process.env.INPUT_PATCH_LABEL = 'patch';
+    expect(getReleaseLabels()).toEqual({
+      2: 'patch',
+    });
+  });
 
-	it('should get labels', () => {
-		expect(getReleaseLabels()).toEqual({
-			0: 'Release: Major',
-			1: 'Release: Minor',
-			2: 'Release: Patch',
-		});
-	});
+  it('should get labels', () => {
+    expect(getReleaseLabels()).toEqual({
+      0: 'Release: Major',
+      1: 'Release: Minor',
+      2: 'Release: Patch',
+    });
+  });
 });
 
 describe('setLabels', () => {
-	testEnv(rootDir);
-	disableNetConnect(nock);
+  testEnv(rootDir);
+  disableNetConnect(nock);
 
-	it('should do nothing', async() => {
-		process.env.INPUT_MAJOR_LABEL = '';
+  it('should do nothing', async() => {
+    process.env.INPUT_MAJOR_LABEL = '';
 
-		const mockStdout = spyOnStdout();
+    const mockStdout = spyOnStdout();
 
-		nock('https://api.github.com')
-			.persist()
-			.get('/repos/hello/world/pulls/123/commits')
-			.reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
-			.get('/repos/hello/world/git/matching-refs/tags/');
+    nock('https://api.github.com')
+      .persist()
+      .get('/repos/hello/world/pulls/123/commits')
+      .reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
+      .get('/repos/hello/world/git/matching-refs/tags/');
 
-		await setLabels(logger, octokit, generateContext({
-			owner: 'hello',
-			repo: 'world',
-		}, {
-			payload: {
-				number: 123,
-			},
-		}));
+    await setLabels(logger, octokit, generateContext({
+      owner: 'hello',
+      repo: 'world',
+    }, {
+      payload: {
+        number: 123,
+      },
+    }));
 
-		stdoutCalledWith(mockStdout, [
-			'::group::Remove label:',
-			'[]',
-			'::endgroup::',
-		]);
-	});
+    stdoutCalledWith(mockStdout, [
+      '::group::Remove label:',
+      '[]',
+      '::endgroup::',
+    ]);
+  });
 
-	it('should add label', async() => {
-		const mockStdout = spyOnStdout();
+  it('should add label', async() => {
+    const mockStdout = spyOnStdout();
 
-		nock('https://api.github.com')
-			.persist()
-			.get('/repos/hello/world/pulls/123/commits')
-			.reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
-			.get('/repos/hello/world/git/matching-refs/tags/')
-			.reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
-			.post('/repos/hello/world/issues/123/labels')
-			.reply(201);
+    nock('https://api.github.com')
+      .persist()
+      .get('/repos/hello/world/pulls/123/commits')
+      .reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
+      .get('/repos/hello/world/git/matching-refs/tags/')
+      .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
+      .post('/repos/hello/world/issues/123/labels')
+      .reply(201);
 
-		await setLabels(logger, octokit, generateContext({
-			owner: 'hello',
-			repo: 'world',
-		}, {
-			payload: {
-				number: 123,
-			},
-		}));
+    await setLabels(logger, octokit, generateContext({
+      owner: 'hello',
+      repo: 'world',
+    }, {
+      payload: {
+        number: 123,
+      },
+    }));
 
-		stdoutCalledWith(mockStdout, [
-			'::group::Remove label:',
-			'[]',
-			'::endgroup::',
-			'::group::Add label:',
-			'"Release: Major"',
-			'::endgroup::',
-		]);
-	});
+    stdoutCalledWith(mockStdout, [
+      '::group::Remove label:',
+      '[]',
+      '::endgroup::',
+      '::group::Add label:',
+      '"Release: Major"',
+      '::endgroup::',
+    ]);
+  });
 
-	it('should remove labels', async() => {
-		const mockStdout = spyOnStdout();
+  it('should remove labels', async() => {
+    const mockStdout = spyOnStdout();
 
-		nock('https://api.github.com')
-			.persist()
-			.get('/repos/hello/world/pulls/123/commits')
-			.reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
-			.get('/repos/hello/world/git/matching-refs/tags/')
-			.reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
-			.post('/repos/hello/world/issues/123/labels')
-			.reply(201)
-			.delete('/repos/hello/world/issues/123/labels/Release:%20Patch')
-			.reply(200);
+    nock('https://api.github.com')
+      .persist()
+      .get('/repos/hello/world/pulls/123/commits')
+      .reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
+      .get('/repos/hello/world/git/matching-refs/tags/')
+      .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
+      .post('/repos/hello/world/issues/123/labels')
+      .reply(201)
+      .delete('/repos/hello/world/issues/123/labels/Release:%20Patch')
+      .reply(200);
 
-		await setLabels(logger, octokit, generateContext({
-			owner: 'hello',
-			repo: 'world',
-		}, {
-			payload: {
-				number: 123,
-				'pull_request': {
-					labels: [{name: 'test'}, {name: 'Release: Patch'}],
-				},
-			},
-		}));
+    await setLabels(logger, octokit, generateContext({
+      owner: 'hello',
+      repo: 'world',
+    }, {
+      payload: {
+        number: 123,
+        'pull_request': {
+          labels: [{name: 'test'}, {name: 'Release: Patch'}],
+        },
+      },
+    }));
 
-		stdoutCalledWith(mockStdout, [
-			'::group::Remove label:',
-			getLogStdout(['Release: Patch']),
-			'::endgroup::',
-			'::group::Add label:',
-			'"Release: Major"',
-			'::endgroup::',
-		]);
-	});
+    stdoutCalledWith(mockStdout, [
+      '::group::Remove label:',
+      getLogStdout(['Release: Patch']),
+      '::endgroup::',
+      '::group::Add label:',
+      '"Release: Major"',
+      '::endgroup::',
+    ]);
+  });
 });
