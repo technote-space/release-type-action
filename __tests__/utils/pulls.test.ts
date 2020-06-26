@@ -26,7 +26,7 @@ describe('setTitle', () => {
       .persist()
       .get('/repos/hello/world/pulls/123/commits')
       .reply(200, () => getApiFixture(fixturesDir, 'commit.list1'))
-      .get('/repos/hello/world/git/matching-refs/tags/')
+      .get('/repos/hello/world/git/matching-refs/tags%2F')
       .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'));
 
     const context = generateContext({
@@ -46,7 +46,7 @@ describe('setTitle', () => {
       .persist()
       .get('/repos/hello/world/pulls/123/commits')
       .reply(200, () => getApiFixture(fixturesDir, 'commit.list1'))
-      .get('/repos/hello/world/git/matching-refs/tags/')
+      .get('/repos/hello/world/git/matching-refs/tags%2F')
       .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'));
 
     const context = generateContext({
@@ -70,7 +70,7 @@ describe('setTitle', () => {
       .persist()
       .get('/repos/hello/world/pulls/123/commits')
       .reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
-      .get('/repos/hello/world/git/matching-refs/tags/')
+      .get('/repos/hello/world/git/matching-refs/tags%2F')
       .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
       .patch('/repos/hello/world/pulls/123', body => {
         fn();
@@ -144,7 +144,7 @@ describe('setLabels', () => {
       .persist()
       .get('/repos/hello/world/pulls/123/commits')
       .reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
-      .get('/repos/hello/world/git/matching-refs/tags/');
+      .get('/repos/hello/world/git/matching-refs/tags%2F');
 
     await setLabels(logger, octokit, generateContext({
       owner: 'hello',
@@ -169,7 +169,7 @@ describe('setLabels', () => {
       .persist()
       .get('/repos/hello/world/pulls/123/commits')
       .reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
-      .get('/repos/hello/world/git/matching-refs/tags/')
+      .get('/repos/hello/world/git/matching-refs/tags%2F')
       .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
       .post('/repos/hello/world/issues/123/labels')
       .reply(201);
@@ -200,11 +200,11 @@ describe('setLabels', () => {
       .persist()
       .get('/repos/hello/world/pulls/123/commits')
       .reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
-      .get('/repos/hello/world/git/matching-refs/tags/')
+      .get('/repos/hello/world/git/matching-refs/tags%2F')
       .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
       .post('/repos/hello/world/issues/123/labels')
       .reply(201)
-      .delete('/repos/hello/world/issues/123/labels/Release:%20Patch')
+      .delete('/repos/hello/world/issues/123/labels/Release%3A%20Patch')
       .reply(200);
 
     await setLabels(logger, octokit, generateContext({
