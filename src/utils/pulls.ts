@@ -1,5 +1,5 @@
 import {Context} from '@actions/github/lib/context';
-import {Octokit} from '@octokit/rest';
+import {Octokit} from '@technote-space/github-action-helper/dist/types';
 import {ApiHelper, Logger} from '@technote-space/github-action-helper';
 import {VERSION_BUMP} from '@technote-space/github-action-version-helper/dist/constant';
 import {getMajorLabel, getMinorLabel, getPatchLabel, getPrLabels, getPrTitle, getTitle} from './misc';

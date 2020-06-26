@@ -1,5 +1,5 @@
 import {Context} from '@actions/github/lib/context';
-import {Octokit} from '@octokit/rest';
+import {Octokit} from '@technote-space/github-action-helper/dist/types';
 import {Logger} from '@technote-space/github-action-helper';
 import ApiHelper from '@technote-space/github-action-helper/dist/api-helper';
 import {setTitle, setLabels} from './utils/pulls';
