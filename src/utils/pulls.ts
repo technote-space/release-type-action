@@ -36,6 +36,21 @@ export const getReleaseLabels = (): { [key: number]: string } => {
   return labels;
 };
 
+const removeLabel = async(label: string, octokit: Octokit, context: Context): Promise<void> => {
+  try {
+    await octokit.issues.removeLabel({
+      ...context.repo,
+      'issue_number': context.payload.number,
+      name: label,
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-magic-numbers
+    if (error.status !== 404) {
+      throw error;
+    }
+  }
+};
+
 export const setLabels = async(logger: Logger, octokit: Octokit, context: Context): Promise<void> => {
   const nextLevel      = await getNextVersionLevel(octokit, context);
   const releaseLabels  = getReleaseLabels();
@@ -45,11 +60,7 @@ export const setLabels = async(logger: Logger, octokit: Octokit, context: Contex
 
   logger.startProcess('Remove label:');
   console.log(labelsToRemove);
-  await Promise.all(labelsToRemove.map(label => octokit.issues.removeLabel({
-    ...context.repo,
-    'issue_number': context.payload.number,
-    name: label,
-  })));
+  await Promise.all(labelsToRemove.map(label => removeLabel(label, octokit, context)));
 
   if (nextLabel && !prLabels.includes(nextLabel)) {
     logger.startProcess('Add label:');
