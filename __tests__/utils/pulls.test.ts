@@ -228,4 +228,72 @@ describe('setLabels', () => {
       '::endgroup::',
     ]);
   });
+
+  it('should not throw error if label not found', async() => {
+    const mockStdout = spyOnStdout();
+
+    nock('https://api.github.com')
+      .persist()
+      .get('/repos/hello/world/pulls/123/commits')
+      .reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
+      .get('/repos/hello/world/git/matching-refs/tags%2F')
+      .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
+      .post('/repos/hello/world/issues/123/labels')
+      .reply(201)
+      .delete('/repos/hello/world/issues/123/labels/Release%3A%20Patch')
+      .reply(404);
+
+    await setLabels(logger, octokit, generateContext({
+      owner: 'hello',
+      repo: 'world',
+    }, {
+      payload: {
+        number: 123,
+        'pull_request': {
+          labels: [{name: 'test'}, {name: 'Release: Patch'}],
+        },
+      },
+    }));
+
+    stdoutCalledWith(mockStdout, [
+      '::group::Remove label:',
+      getLogStdout(['Release: Patch']),
+      '::endgroup::',
+      '::group::Add label:',
+      '"Release: Major"',
+      '::endgroup::',
+    ]);
+  });
+
+  it('should throw error', async() => {
+    const mockStdout = spyOnStdout();
+
+    nock('https://api.github.com')
+      .persist()
+      .get('/repos/hello/world/pulls/123/commits')
+      .reply(200, () => getApiFixture(fixturesDir, 'commit.list2'))
+      .get('/repos/hello/world/git/matching-refs/tags%2F')
+      .reply(200, () => getApiFixture(fixturesDir, 'repos.git.matching-refs'))
+      .post('/repos/hello/world/issues/123/labels')
+      .reply(201)
+      .delete('/repos/hello/world/issues/123/labels/Release%3A%20Patch')
+      .reply(500);
+
+    await expect(setLabels(logger, octokit, generateContext({
+      owner: 'hello',
+      repo: 'world',
+    }, {
+      payload: {
+        number: 123,
+        'pull_request': {
+          labels: [{name: 'test'}, {name: 'Release: Patch'}],
+        },
+      },
+    }))).rejects.toThrow();
+
+    stdoutCalledWith(mockStdout, [
+      '::group::Remove label:',
+      getLogStdout(['Release: Patch']),
+    ]);
+  });
 });
