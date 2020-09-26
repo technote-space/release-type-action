@@ -2,7 +2,8 @@
 import {resolve} from 'path';
 import nock from 'nock';
 import {Context} from '@actions/github/lib/context';
-import {Logger, ApiHelper} from '@technote-space/github-action-helper';
+import {ApiHelper} from '@technote-space/github-action-helper';
+import {Logger} from '@technote-space/github-action-log-helper';
 import {generateContext, testEnv, getOctokit, disableNetConnect, getApiFixture, spyOnStdout, stdoutCalledWith, getLogStdout} from '@technote-space/github-action-test-helper';
 import {setTitle, getReleaseLabels, setLabels} from '../../src/utils/pulls';
 
