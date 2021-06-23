@@ -11,7 +11,7 @@ export const setTitle = async(logger: Logger, helper: ApiHelper, octokit: Octoki
   const title = await getTitle(next);
 
   if (title && title !== getPrTitle(context)) {
-    await octokit.pulls.update({
+    await octokit.rest.pulls.update({
       ...context.repo,
       'pull_number': context.payload.number,
       title,
@@ -39,7 +39,7 @@ export const getReleaseLabels = (): { [key: number]: string } => {
 
 const removeLabel = async(label: string, octokit: Octokit, context: Context): Promise<void> => {
   try {
-    await octokit.issues.removeLabel({
+    await octokit.rest.issues.removeLabel({
       ...context.repo,
       'issue_number': context.payload.number,
       name: label,
@@ -66,7 +66,7 @@ export const setLabels = async(logger: Logger, octokit: Octokit, context: Contex
   if (nextLabel && !prLabels.includes(nextLabel)) {
     logger.startProcess('Add label:');
     console.log(nextLabel);
-    await octokit.issues.addLabels({
+    await octokit.rest.issues.addLabels({
       ...context.repo,
       'issue_number': context.payload.number,
       labels: [nextLabel],
