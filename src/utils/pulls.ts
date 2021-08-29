@@ -44,7 +44,7 @@ const removeLabel = async(label: string, octokit: Octokit, context: Context): Pr
       'issue_number': context.payload.number,
       name: label,
     });
-  } catch (error) {
+  } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     // eslint-disable-next-line no-magic-numbers
     if (error.status !== 404) {
       throw error;
