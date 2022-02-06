@@ -1,6 +1,6 @@
 {
   "name": "@technote-space/release-type-action",
-  "version": "1.5.16",
+  "version": "1.5.17",
   "description": "GitHub Actions to do some actions based on release type.",
   "keywords": [
     "github",
