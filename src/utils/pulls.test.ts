@@ -1,11 +1,11 @@
 /* eslint-disable no-magic-numbers */
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import { resolve } from 'path';
-import nock from 'nock';
 import type { Context } from '@actions/github/lib/context';
+import { resolve } from 'path';
 import { ApiHelper } from '@technote-space/github-action-helper';
 import { Logger } from '@technote-space/github-action-log-helper';
 import { generateContext, testEnv, getOctokit, disableNetConnect, getApiFixture, spyOnStdout, stdoutCalledWith, getLogStdout } from '@technote-space/github-action-test-helper';
+import nock from 'nock';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { setTitle, getReleaseLabels, setLabels } from './pulls';
 
 const rootDir      = resolve(__dirname, '../..');

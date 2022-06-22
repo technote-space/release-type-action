@@ -1,7 +1,6 @@
 /* eslint-disable no-magic-numbers */
-import { afterEach, describe, expect, it, vi } from 'vitest';
 import { resolve } from 'path';
-import nock from 'nock';
+import { Logger } from '@technote-space/github-action-log-helper';
 import {
   testEnv,
   disableNetConnect,
@@ -15,7 +14,8 @@ import {
   getLogStdout,
   getApiFixture, stdoutContains,
 } from '@technote-space/github-action-test-helper';
-import { Logger } from '@technote-space/github-action-log-helper';
+import nock from 'nock';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { execute } from './process';
 
 const rootDir     = resolve(__dirname, '..');

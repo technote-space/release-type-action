@@ -1,6 +1,6 @@
 import type { Context } from '@actions/github/lib/context';
-import { Utils } from '@technote-space/github-action-helper';
 import { getInput } from '@actions/core';
+import { Utils } from '@technote-space/github-action-helper';
 
 export const getMinorUpdateCommitTypes = (): Array<string> => Utils.getArrayInput('MINOR_UPDATE_TYPES');
 export const getExcludeMessages        = (): Array<string> => Utils.getArrayInput('EXCLUDE_MESSAGES');

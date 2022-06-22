@@ -1,8 +1,8 @@
 /* eslint-disable no-magic-numbers */
-import { describe, expect, it } from 'vitest';
 import { resolve } from 'path';
 import { isTargetEvent } from '@technote-space/filter-github-action';
 import { getContext, testEnv } from '@technote-space/github-action-test-helper';
+import { describe, expect, it } from 'vitest';
 import { getTitle, getPrHeadRef, getPrTitle, getPrLabels, isTargetBranch } from '../../src/utils/misc';
 import { TARGET_EVENTS } from '../constant';
 
