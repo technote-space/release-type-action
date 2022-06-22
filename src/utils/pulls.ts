@@ -1,10 +1,10 @@
-import {Context} from '@actions/github/lib/context';
-import {Octokit} from '@technote-space/github-action-helper/dist/types';
-import {ApiHelper} from '@technote-space/github-action-helper';
-import {Logger} from '@technote-space/github-action-log-helper';
-import {VERSION_BUMP} from '@technote-space/github-action-version-helper/dist/constant';
-import {getMajorLabel, getMinorLabel, getPatchLabel, getPrLabels, getPrTitle, getTitle} from './misc';
-import {getNextVersion, getNextVersionLevel} from './version';
+import { Context } from '@actions/github/lib/context';
+import { Octokit } from '@technote-space/github-action-helper';
+import { ApiHelper } from '@technote-space/github-action-helper';
+import { Logger } from '@technote-space/github-action-log-helper';
+import { Constant } from '@technote-space/github-action-version-helper';
+import { getMajorLabel, getMinorLabel, getPatchLabel, getPrLabels, getPrTitle, getTitle } from './misc';
+import { getNextVersion, getNextVersionLevel } from './version';
 
 export const setTitle = async(logger: Logger, helper: ApiHelper, octokit: Octokit, context: Context): Promise<void> => {
   const next  = await getNextVersion(logger, helper, octokit, context);
@@ -25,13 +25,13 @@ export const getReleaseLabels = (): { [key: number]: string } => {
   const minor  = getMinorLabel();
   const patch  = getPatchLabel();
   if (major) {
-    labels[VERSION_BUMP['major']] = major;
+    labels[Constant.VERSION_BUMP['major']] = major;
   }
   if (minor) {
-    labels[VERSION_BUMP['minor']] = minor;
+    labels[Constant.VERSION_BUMP['minor']] = minor;
   }
   if (patch) {
-    labels[VERSION_BUMP['patch']] = patch;
+    labels[Constant.VERSION_BUMP['patch']] = patch;
   }
 
   return labels;

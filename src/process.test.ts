@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers */
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import {resolve} from 'path';
+import { resolve } from 'path';
 import nock from 'nock';
 import {
   testEnv,
@@ -15,8 +15,8 @@ import {
   getLogStdout,
   getApiFixture, stdoutContains,
 } from '@technote-space/github-action-test-helper';
-import {Logger} from '@technote-space/github-action-log-helper';
-import {execute} from '../src/process';
+import { Logger } from '@technote-space/github-action-log-helper';
+import { execute } from './process';
 
 const rootDir     = resolve(__dirname, '..');
 const fixturesDir = resolve(__dirname, 'fixtures');
@@ -38,7 +38,7 @@ const context     = generateContext({
         ref: 'master',
       },
       'html_url': 'https://github.com/octocat/Hello-World/pull/123',
-      labels: [{name: 'test'}, {name: 'Release: Patch'}],
+      labels: [{ name: 'test' }, { name: 'Release: Patch' }],
     },
   },
 });
@@ -85,7 +85,7 @@ describe('execute', () => {
 
     await execute(new Logger(), getOctokit(), Object.assign({}, context, {
       payload: Object.assign({}, context.payload, {
-        'pull_request': Object.assign({}, context.payload.pull_request, {title: 'test'}),
+        'pull_request': Object.assign({}, context.payload.pull_request, { title: 'test' }),
       }),
     }));
 

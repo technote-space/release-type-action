@@ -1,12 +1,12 @@
 /* eslint-disable no-magic-numbers */
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import {resolve} from 'path';
+import { resolve } from 'path';
 import nock from 'nock';
-import {Context} from '@actions/github/lib/context';
-import {ApiHelper} from '@technote-space/github-action-helper';
-import {Logger} from '@technote-space/github-action-log-helper';
-import {generateContext, testEnv, getOctokit, disableNetConnect, getApiFixture, spyOnStdout, stdoutCalledWith, getLogStdout} from '@technote-space/github-action-test-helper';
-import {setTitle, getReleaseLabels, setLabels} from '../../src/utils/pulls';
+import { Context } from '@actions/github/lib/context';
+import { ApiHelper } from '@technote-space/github-action-helper';
+import { Logger } from '@technote-space/github-action-log-helper';
+import { generateContext, testEnv, getOctokit, disableNetConnect, getApiFixture, spyOnStdout, stdoutCalledWith, getLogStdout } from '@technote-space/github-action-test-helper';
+import { setTitle, getReleaseLabels, setLabels } from './pulls';
 
 const rootDir      = resolve(__dirname, '../..');
 const fixturesDir  = resolve(__dirname, '..', 'fixtures');
@@ -216,7 +216,7 @@ describe('setLabels', () => {
       payload: {
         number: 123,
         'pull_request': {
-          labels: [{name: 'test'}, {name: 'Release: Patch'}],
+          labels: [{ name: 'test' }, { name: 'Release: Patch' }],
         },
       },
     }));
@@ -252,7 +252,7 @@ describe('setLabels', () => {
       payload: {
         number: 123,
         'pull_request': {
-          labels: [{name: 'test'}, {name: 'Release: Patch'}],
+          labels: [{ name: 'test' }, { name: 'Release: Patch' }],
         },
       },
     }));
@@ -288,7 +288,7 @@ describe('setLabels', () => {
       payload: {
         number: 123,
         'pull_request': {
-          labels: [{name: 'test'}, {name: 'Release: Patch'}],
+          labels: [{ name: 'test' }, { name: 'Release: Patch' }],
         },
       },
     }))).rejects.toThrow();
