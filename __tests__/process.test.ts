@@ -1,4 +1,5 @@
 /* eslint-disable no-magic-numbers */
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {resolve} from 'path';
 import nock from 'nock';
 import {
@@ -66,7 +67,7 @@ describe('execute', () => {
   it('should update title', async() => {
     const mockExec   = spyOnSpawn();
     const mockStdout = spyOnStdout();
-    const fn         = jest.fn();
+    const fn         = vi.fn();
 
     nock('https://api.github.com')
       .persist()
@@ -104,9 +105,9 @@ describe('execute', () => {
 
   it('should set labels', async() => {
     const mockStdout = spyOnStdout();
-    const fn1        = jest.fn();
-    const fn2        = jest.fn();
-    const fn3        = jest.fn();
+    const fn1        = vi.fn();
+    const fn2        = vi.fn();
+    const fn3        = vi.fn();
 
     nock('https://api.github.com')
       .persist()

@@ -1,4 +1,5 @@
 /* eslint-disable no-magic-numbers */
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {resolve} from 'path';
 import nock from 'nock';
 import {Context} from '@actions/github/lib/context';
@@ -65,7 +66,7 @@ describe('setTitle', () => {
   });
 
   it('should set title', async() => {
-    const fn = jest.fn();
+    const fn = vi.fn();
 
     nock('https://api.github.com')
       .persist()
