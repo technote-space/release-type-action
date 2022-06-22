@@ -1,4 +1,4 @@
-import { Context } from '@actions/github/lib/context';
+import type { Context } from '@actions/github/lib/context';
 import { Utils } from '@technote-space/github-action-helper';
 import { getInput } from '@actions/core';
 
