@@ -1,11 +1,12 @@
 /* eslint-disable no-magic-numbers */
-import {resolve} from 'path';
+import type { Context } from '@actions/github/lib/context';
+import { resolve } from 'path';
+import { ApiHelper } from '@technote-space/github-action-helper';
+import { Logger } from '@technote-space/github-action-log-helper';
+import { generateContext, testEnv, getOctokit, disableNetConnect, getApiFixture, spyOnStdout, stdoutCalledWith, getLogStdout } from '@technote-space/github-action-test-helper';
 import nock from 'nock';
-import {Context} from '@actions/github/lib/context';
-import {ApiHelper} from '@technote-space/github-action-helper';
-import {Logger} from '@technote-space/github-action-log-helper';
-import {generateContext, testEnv, getOctokit, disableNetConnect, getApiFixture, spyOnStdout, stdoutCalledWith, getLogStdout} from '@technote-space/github-action-test-helper';
-import {setTitle, getReleaseLabels, setLabels} from '../../src/utils/pulls';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { setTitle, getReleaseLabels, setLabels } from './pulls';
 
 const rootDir      = resolve(__dirname, '../..');
 const fixturesDir  = resolve(__dirname, '..', 'fixtures');
@@ -65,7 +66,7 @@ describe('setTitle', () => {
   });
 
   it('should set title', async() => {
-    const fn = jest.fn();
+    const fn = vi.fn();
 
     nock('https://api.github.com')
       .persist()
@@ -215,7 +216,7 @@ describe('setLabels', () => {
       payload: {
         number: 123,
         'pull_request': {
-          labels: [{name: 'test'}, {name: 'Release: Patch'}],
+          labels: [{ name: 'test' }, { name: 'Release: Patch' }],
         },
       },
     }));
@@ -251,7 +252,7 @@ describe('setLabels', () => {
       payload: {
         number: 123,
         'pull_request': {
-          labels: [{name: 'test'}, {name: 'Release: Patch'}],
+          labels: [{ name: 'test' }, { name: 'Release: Patch' }],
         },
       },
     }));
@@ -287,7 +288,7 @@ describe('setLabels', () => {
       payload: {
         number: 123,
         'pull_request': {
-          labels: [{name: 'test'}, {name: 'Release: Patch'}],
+          labels: [{ name: 'test' }, { name: 'Release: Patch' }],
         },
       },
     }))).rejects.toThrow();

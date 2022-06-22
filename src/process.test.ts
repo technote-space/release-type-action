@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers */
-import {resolve} from 'path';
-import nock from 'nock';
+import { resolve } from 'path';
+import { Logger } from '@technote-space/github-action-log-helper';
 import {
   testEnv,
   disableNetConnect,
@@ -14,8 +14,9 @@ import {
   getLogStdout,
   getApiFixture, stdoutContains,
 } from '@technote-space/github-action-test-helper';
-import {Logger} from '@technote-space/github-action-log-helper';
-import {execute} from '../src/process';
+import nock from 'nock';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { execute } from './process';
 
 const rootDir     = resolve(__dirname, '..');
 const fixturesDir = resolve(__dirname, 'fixtures');
@@ -37,7 +38,7 @@ const context     = generateContext({
         ref: 'master',
       },
       'html_url': 'https://github.com/octocat/Hello-World/pull/123',
-      labels: [{name: 'test'}, {name: 'Release: Patch'}],
+      labels: [{ name: 'test' }, { name: 'Release: Patch' }],
     },
   },
 });
@@ -66,7 +67,7 @@ describe('execute', () => {
   it('should update title', async() => {
     const mockExec   = spyOnSpawn();
     const mockStdout = spyOnStdout();
-    const fn         = jest.fn();
+    const fn         = vi.fn();
 
     nock('https://api.github.com')
       .persist()
@@ -84,7 +85,7 @@ describe('execute', () => {
 
     await execute(new Logger(), getOctokit(), Object.assign({}, context, {
       payload: Object.assign({}, context.payload, {
-        'pull_request': Object.assign({}, context.payload.pull_request, {title: 'test'}),
+        'pull_request': Object.assign({}, context.payload.pull_request, { title: 'test' }),
       }),
     }));
 
@@ -104,9 +105,9 @@ describe('execute', () => {
 
   it('should set labels', async() => {
     const mockStdout = spyOnStdout();
-    const fn1        = jest.fn();
-    const fn2        = jest.fn();
-    const fn3        = jest.fn();
+    const fn1        = vi.fn();
+    const fn2        = vi.fn();
+    const fn3        = vi.fn();
 
     nock('https://api.github.com')
       .persist()

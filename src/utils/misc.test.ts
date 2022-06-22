@@ -1,9 +1,10 @@
 /* eslint-disable no-magic-numbers */
-import {resolve} from 'path';
-import {isTargetEvent} from '@technote-space/filter-github-action';
-import {getContext, testEnv} from '@technote-space/github-action-test-helper';
-import {getTitle, getPrHeadRef, getPrTitle, getPrLabels, isTargetBranch} from '../../src/utils/misc';
-import {TARGET_EVENTS} from '../../src/constant';
+import { resolve } from 'path';
+import { isTargetEvent } from '@technote-space/filter-github-action';
+import { getContext, testEnv } from '@technote-space/github-action-test-helper';
+import { describe, expect, it } from 'vitest';
+import { getTitle, getPrHeadRef, getPrTitle, getPrLabels, isTargetBranch } from '../../src/utils/misc';
+import { TARGET_EVENTS } from '../constant';
 
 const rootDir = resolve(__dirname, '../..');
 
@@ -47,7 +48,7 @@ describe('getPrHeadRef', () => {
     expect(getPrHeadRef(getContext({
       payload: {
         'pull_request': {
-          head: {ref: 'test'},
+          head: { ref: 'test' },
         },
       },
     }))).toBe('test');
@@ -83,7 +84,7 @@ describe('getPrLabels', () => {
     expect(getPrLabels(getContext({
       payload: {
         'pull_request': {
-          labels: [{name: 'test1'}, {name: 'test 2'}],
+          labels: [{ name: 'test1' }, { name: 'test 2' }],
         },
       },
     }))).toEqual(['test1', 'test 2']);

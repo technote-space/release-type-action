@@ -1,6 +1,6 @@
-import {Context} from '@actions/github/lib/context';
-import {Utils} from '@technote-space/github-action-helper';
-import {getInput} from '@actions/core';
+import type { Context } from '@actions/github/lib/context';
+import { getInput } from '@actions/core';
+import { Utils } from '@technote-space/github-action-helper';
 
 export const getMinorUpdateCommitTypes = (): Array<string> => Utils.getArrayInput('MINOR_UPDATE_TYPES');
 export const getExcludeMessages        = (): Array<string> => Utils.getArrayInput('EXCLUDE_MESSAGES');
@@ -13,7 +13,7 @@ export const getMinorLabel             = (): string => getInput('MINOR_LABEL');
 export const getPatchLabel             = (): string => getInput('PATCH_LABEL');
 
 const contextVariables = (next: string): Array<{ key: string; replace: () => string }> => [
-  {key: 'NEXT_VERSION', replace: (): string => next},
+  { key: 'NEXT_VERSION', replace: (): string => next },
 ];
 export const getTitle  = (next: string): Promise<string> => Utils.replaceVariables(getTitleTemplate(), contextVariables(next));
 
